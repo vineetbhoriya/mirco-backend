@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import dotenv from 'dotenv';
 
@@ -7,28 +7,18 @@ dotenv.config();
 
 const app = express();
 
-// Proxy middleware options
-const productServiceProxy = createProxyMiddleware({
-  target: process.env.PRODUCT_SERVICE_URL,
+// Utility function to create a proxy middleware
+const createServiceProxy = (serviceUrl: string, pathPrefix: string) => createProxyMiddleware({
+  target: serviceUrl,
   changeOrigin: true,
-  pathRewrite: { '^/api/products': '' },
+  pathRewrite: { [`^${pathPrefix}`]: '' },
 });
 
-const userServiceProxy = createProxyMiddleware({
-  target: process.env.USER_SERVICE_URL,
-  changeOrigin: true,
-  pathRewrite: { '^/api/users': '' },
-});
-const orderServiceProxy = createProxyMiddleware({
-  target: process.env.ORDER_SERVICE_URL,
-  changeOrigin: true,
-  pathRewrite: { '^/api/order': '' },
-});
-
-// Define routes
-app.use('/api/product', productServiceProxy);
-app.use('/api/user', userServiceProxy);
-app.use('/api/order', orderServiceProxy);
+// Define proxy middleware for different services
+app.use('/api/products', createServiceProxy(process.env.PRODUCT_SERVICE_URL!, '/api/products'));
+app.use('/api/users', createServiceProxy(process.env.USER_SERVICE_URL!, '/api/users'));
+app.use('/api/order', createServiceProxy(process.env.ORDER_SERVICE_URL!, '/api/order'));
+app.use('/api/payment', createServiceProxy(process.env.PAYMENT_SERVICE_URL!, '/api/payment'));
 
 // Start the server
 const PORT = process.env.PORT || 8000;
