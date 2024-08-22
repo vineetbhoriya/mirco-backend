@@ -5,18 +5,21 @@ import {
   getAllUsersController,
   getUserByIdController,
 } from "../controller/userController";
-
+import { signInController } from "../controller/authController";
+import { authenticateJWT } from "../middleware/isLogin";
 
 const userRoutes = Router();
 
-userRoutes.post("/", createUserWithAddressController);
-// Route to get a user by ID
-userRoutes.get("/:userId", getUserByIdController);
+userRoutes.post("/login", signInController);
 
-// Route to get all users 
-userRoutes.get("/", getAllUsersController);
+userRoutes.post("/", authenticateJWT, createUserWithAddressController);
+// Route to get a user by ID
+userRoutes.get("/:userId", authenticateJWT, getUserByIdController);
+
+// Route to get all users
+userRoutes.get("/", authenticateJWT, getAllUsersController);
 
 // Route to delete a user by ID
-userRoutes.delete("/:userId", deleteUserByIdController);
+userRoutes.delete("/:userId", authenticateJWT, deleteUserByIdController);
 
 export default userRoutes;

@@ -31,7 +31,7 @@ export const createUserWithAddress = async (
     if (!addressData) {
       throw new Error("Address data is required.");
     }
-    
+
     const { street, city, state, zipCode, country } = addressData;
 
     // Create and save the address
@@ -88,7 +88,10 @@ export const getUserById = async (userId: string): Promise<IUser | null> => {
 // Function to get all users (optional, if you want to retrieve a list of users)
 export const getAllUsers = async (): Promise<IUser[]> => {
   try {
-    const users = await User.find().populate("address").exec();
+    const users = await User.find()
+      .select({ password: 0 })
+      .populate("address")
+      .exec();
     return users;
   } catch (error) {
     throw new Error(
