@@ -1,0 +1,50 @@
+services:
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "8000:8000"
+    depends_on:
+      - user
+      - product
+      - order
+      - payment
+    env_file:
+      - ./api-gateway/.env
+
+  user:
+    build: ./user
+    ports:
+      - "8001:8001"
+    env_file:
+      - ./user/.env
+
+  product:
+    build: ./product
+    ports:
+      - "8002:8002"
+    env_file:
+      - ./product/.env
+
+  order:
+    build: ./order
+    ports:
+      - "8003:8003"
+    env_file:
+      - ./order/.env
+
+  payment:
+    build: ./payment
+    ports:
+      - "8004:8004"
+    env_file:
+      - ./payment/.env
+
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
