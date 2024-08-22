@@ -8,7 +8,7 @@ export const OrderSchema: Schema<IOrder> = new Schema(
       {
         product: { type: Schema.Types.ObjectId, ref: "Product", required: true },
         quantity: { type: Number, required: true },
-        price: { type: Number, required: true }, // Snapshot of the price at the time of order
+        price: { type: Number, required: true },
       },
     ],
     totalAmount: { type: Number, required: true },

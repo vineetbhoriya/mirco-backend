@@ -4,6 +4,9 @@ todo
 communication between the server with rabbitMQ
 authentication
 docker image 
+email validation lib.
 
+websocket
 
+@REM set env variables while running on localhost
 
