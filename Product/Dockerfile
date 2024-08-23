@@ -2,13 +2,13 @@
 FROM node:18-alpine
 
 # Set working directory
-WORKDIR /app
+WORKDIR /src
 
 # Copy package.json and package-lock.json
 COPY package*.json ./
 
-# Install dependencies (only production dependencies if applicable)
-RUN npm ci --only=production
+# Install dependencies, including devDependencies for build
+RUN npm ci --verbose
 
 # Copy application code
 COPY . .
@@ -16,7 +16,7 @@ COPY . .
 # Build the TypeScript code
 RUN npm run build
 
-# Remove TypeScript source files and unnecessary dependencies (optional)
+# Remove development dependencies to keep the image lean
 RUN npm prune --production
 
 # Expose the port the app runs on

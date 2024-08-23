@@ -15,10 +15,11 @@ const createServiceProxy = (serviceUrl: string, pathPrefix: string) => createPro
 });
 
 // Define proxy middleware for different services
-app.use('/api/product', createServiceProxy(process.env.PRODUCT_SERVICE_URL!, '/api/products'));
-app.use('/api/user', createServiceProxy(process.env.USER_SERVICE_URL!, '/api/users'));
+app.use('/api/product', createServiceProxy(process.env.PRODUCT_SERVICE_URL!, '/api/product'));
+app.use('/api/user', createServiceProxy(process.env.USER_SERVICE_URL!, '/api/user'));
 app.use('/api/order', createServiceProxy(process.env.ORDER_SERVICE_URL!, '/api/order'));
 app.use('/api/payment', createServiceProxy(process.env.PAYMENT_SERVICE_URL!, '/api/payment'));
+
 
 // Start the server
 const PORT = process.env.PORT || 8000;
