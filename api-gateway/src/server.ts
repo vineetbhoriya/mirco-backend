@@ -14,6 +14,9 @@ const createServiceProxy = (serviceUrl: string, pathPrefix: string) => createPro
   pathRewrite: { [`^${pathPrefix}`]: '' },
 });
 
+app.get('/', (req, res) =>{
+  res.send('API Gateway is available');
+})
 // Define proxy middleware for different services
 app.use('/api/product', createServiceProxy(process.env.PRODUCT_SERVICE_URL!, '/api/product'));
 app.use('/api/user', createServiceProxy(process.env.USER_SERVICE_URL!, '/api/user'));
