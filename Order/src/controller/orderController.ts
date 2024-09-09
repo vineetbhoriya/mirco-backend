@@ -22,8 +22,6 @@ export const createOrderController = async (
     next(error);
   }
 };
-
-
 export const getByIdController = async (
   req: Request,
   res: Response,
@@ -48,7 +46,6 @@ export const getByIdController = async (
     next(error);
   }
 };
-
 export const getAllController = async (
   req: Request,
   res: Response,
@@ -64,7 +61,6 @@ export const getAllController = async (
     next(error);
   }
 };
-
 export const deleteByIdController = async (
   req: Request,
   res: Response,

@@ -13,7 +13,7 @@ const userRoutes = Router();
 
 userRoutes.post("/login", signInController);
 
-userRoutes.post("/", authenticateJWT, createUserWithAddressController);
+userRoutes.post("/", createUserWithAddressController);
 
 userRoutes.post("/sendMessage", sendMessage);
 

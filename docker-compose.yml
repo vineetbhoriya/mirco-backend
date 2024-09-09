@@ -1,4 +1,3 @@
-
 services:
   api-gateway:
     build: ./api-gateway
@@ -9,6 +8,7 @@ services:
       - product
       - order
       - payment
+      - rabbitmq   # Add RabbitMQ as a dependency
     env_file:
       - ./api-gateway/.env
 
@@ -18,6 +18,8 @@ services:
       - "8001:8001"
     env_file:
       - ./user/.env
+    depends_on:
+      - rabbitmq   # Add RabbitMQ as a dependency
 
   product:
     build: ./product
@@ -25,6 +27,8 @@ services:
       - "8002:8002"
     env_file:
       - ./product/.env
+    depends_on:
+      - rabbitmq   # Add RabbitMQ as a dependency
 
   order:
     build: ./order
@@ -32,6 +36,8 @@ services:
       - "8003:8003"
     env_file:
       - ./order/.env
+    depends_on:
+      - rabbitmq   # Add RabbitMQ as a dependency
 
   payment:
     build: ./payment
@@ -39,6 +45,17 @@ services:
       - "8004:8004"
     env_file:
       - ./payment/.env
+    depends_on:
+      - rabbitmq   # Add RabbitMQ as a dependency
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"  # For messaging
+      - "15672:15672"  # RabbitMQ management console
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
 
   mongo:
     image: mongo
