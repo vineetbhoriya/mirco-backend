@@ -5,6 +5,7 @@ import {
   getAllUsers,
   getUserById,
 } from "../service/user.service";
+import { sendMessageToQueue } from "../config/rabbitmq";
 
 export const createUserWithAddressController = async (
   req: Request,
@@ -84,5 +85,21 @@ export const deleteUserByIdController = async (
     }
   } catch (error) {
     next(error);
+  }
+};
+
+export const sendMessage = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { message } = req.body;
+  try {
+    await sendMessageToQueue(message);
+    res
+      .status(200)
+      .json({ success: true, message: "Message sent to RabbitMQ" });
+  } catch (error) {
+    res.status(500).json({ success: false, error: "Failed to send message" });
   }
 };

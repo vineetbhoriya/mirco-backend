@@ -88,10 +88,27 @@ export const getUserById = async (userId: string): Promise<IUser | null> => {
 // Function to get all users (optional, if you want to retrieve a list of users)
 export const getAllUsers = async (): Promise<IUser[]> => {
   try {
-    const users = await User.find()
-      .select({ password: 0 })
-      .populate("address")
-      .exec();
+    const users = await User.aggregate([
+      {
+        $lookup: {
+          from: "addresses",
+          localField: "address",
+          foreignField: "_id",
+          as: "address",
+        },
+      },
+      {
+        $project: {
+          password: 0,
+          __v: 0,
+          "address.__v": 0,
+          "address.updatedAt": 0,
+          "address.createdAt": 0,
+          "address.user": 0,
+        },
+      },
+    ]).exec();
+
     return users;
   } catch (error) {
     throw new Error(
